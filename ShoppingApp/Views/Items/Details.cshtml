@@ -1,0 +1,64 @@
+﻿@model ShoppingApp.Models.Item
+
+<h2>@Html.DisplayFor(model => model.Name)</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd>
+            $ @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+
+        </dt>
+
+        <dd>
+            <img src="@Url.Content(Model.MediaUrl)" />
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.Description)
+        </dd>
+    </dl>
+</div>
+@if (User.IsInRole("Admin"))
+{
+    <div>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Created)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Created)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Updated)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Updated)
+            </dd>
+
+        </dl>
+    </div>
+    <div>
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        </p>
+    </div>
+        }
+    <div>
+        <p>
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+    </div>

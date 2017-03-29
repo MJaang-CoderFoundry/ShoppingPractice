@@ -1,0 +1,140 @@
+﻿@model IEnumerable<ShoppingApp.Models.ShoppingCart>
+<!DOCTYPE HTML>
+<html>
+<body>
+
+    <div class="account-in">
+   	 <div class="container">
+@foreach (var item in Model)
+{
+    <div class="check_box">
+		<div class="col-md-9 cart-items">
+			 <h1>My Shopping Bag (@Model.Sum(c => c.Count))</h1>
+				
+
+			 <div class="cart-header">
+                 @using (Html.BeginForm("DeleteConfirmed", "ShoppingCarts", new { id = item.Id }, FormMethod.Post, null))
+                 {
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="close1"></button>
+                 }
+				   <div class="cart-sec simpleCart_shelfItem">
+						<div class="cart-item cyc">
+							 <img src="@Url.Content(item.Item.MediaUrl)" class="img-responsive" alt=""/>
+						</div>
+					   <div class="cart-item-info">
+						<h3><a href="@Url.Action("Details", "Items", new { id = item.Item.Id })">@Html.DisplayFor(modelItem => item.Item.Name)</a><span>Model No: @item.ItemId</span></h3>
+						<ul class="qty">
+							<li><p id="@item.Id">Qty : @Html.DisplayFor(modelItem => item.Count)</p></li>
+                            @using (Html.BeginForm("Edit", "ShoppingCarts", new { id = item.Id }, FormMethod.Post, null))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.HiddenFor(m => item.Id)
+                                @Html.HiddenFor(m => item.Created)
+                                @Html.HiddenFor(m => item.CustomerId)
+                                @Html.HiddenFor(m => item.ItemId)
+                            <li><a id="(@item.Id)" href="#@item.Id">adjust</a></li>
+                            }
+						</ul>
+                           <script>
+
+                           </script>
+						<div class="delivery">
+							 <div class="container">
+                                  <div class="row">
+                                      <div class="col-md-2">
+                                          <p>Price : US $ @Html.DisplayFor(modelItem => item.Item.Price)</p>
+                                      </div>
+                                      <div class="col-md-4">
+                                          <p>Unti Total: US $ @Html.DisplayFor(modelItem => item.unitTotal)</p>
+                                      </div>
+                                  </div>
+                             </div>
+							 <span>Delivered in 2-3 business days</span>
+							 <div class="clearfix"></div>
+				        </div>	
+					   </div>
+					   <div class="clearfix"></div>
+				    </div>
+			 </div>
+
+		 </div>
+		 <div class="col-md-3 cart-total">
+			 <a class="continue" href="@Url.Action("Index", "Items")">Continue shopping</a>
+			 <div class="price-details">
+				 <h3>Price Details</h3>
+				 <span>Total</span>
+				 <span class="total1">@Model.Sum(t => t.Item.Price * t.Count)</span>
+				 <span>Discount</span>
+				 <span class="total1">---</span>
+				 <span>Insurance and Delivery</span>
+				 <span class="total1">150.00</span>
+				 <div class="clearfix"></div>				 
+			 </div>	
+			 <ul class="total_price">
+			   <li class="last_price"> <h4>TOTAL</h4></li>	
+			   <li class="last_price"><span>@Model.Sum(t => t.Item.Price * t.Count + 150)</span></li>
+			   <div class="clearfix"> </div>
+			 </ul>
+			 <div class="clearfix"></div>
+           @*<div data-marker="@Json.Encode(item)"></div>*@
+			 <a class="order" href="@Url.Action("Create", "Orders")">Place Order</a>
+			</div>
+			<div class="clearfix"></div>
+	     </div>
+}
+	  </div>
+   </div>
+   <div class="map">
+	   <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3150859.767904157!2d-96.62081048651531!3d39.536794757966845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1408111832978"> </iframe>
+   </div>
+   <div class="footer">
+   	 <div class="container">
+   	 	<div class="newsletter">
+			<h3>Newsletter</h3>
+			<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
+			<form>
+			  <input type="text" value="" onfocus="this.value='';" onblur="if (this.value == '') {this.value ='';}">
+			  <input type="submit" value="SUBSCRIBE">
+			</form>
+		</div>
+   		<div class="cssmenu">
+		   <ul>
+			<li class="active"><a href="#">Privacy</a></li>
+			<li><a href="#">Terms</a></li>
+			<li><a href="#">Shop</a></li>
+			<li><a href="#">About</a></li>
+			<li><a href="contact.html">Contact</a></li>
+		  </ul>
+		</div>
+		<ul class="social">
+			<li><a href=""> <i class="instagram"> </i> </a></li>
+			<li><a href=""><i class="fb"> </i> </a></li>
+			<li><a href=""><i class="tw"> </i> </a></li>
+	    </ul>
+            &nb
+	    <div class="clearfix"></div>
+	    <div class="copy">
+           <p> &copy; 2015 Watches. All Rights Reserved | Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a></p>
+	    </div>
+   	</div>
+   </div>
+    @section scripts{
+        @*<script type="text/javascript">
+            $(document).ready(function () {
+                $('[data-marker]').each(function () {
+                    var markerData = $(this).data('marker');
+                    $('#(' + markerData.Id + ')').click(function () {
+                        $('#(' + markerData.Id + ')').replaceWith('<button type=submit>Submit</button>&nbsp;<a href="#' + markerData.Id + '&cancel" id="' + markerData.Id + '&cancel">Cancel</button>');
+                        $('#' + markerData.Id).replaceWith('<input name="Count" type="number" value="@@item.Count"/>');
+                    });
+                    $('#' + markerData.Id + '&cancel').click(function () {
+                        $('<input name="Count" type="number"/>').replaceWith('<p id="' + markerData.Id + '">Qty : @@Html.DisplayFor(modelItem => item.Count)</p>');
+                        $('<button type=submit>Submit</button>&nbsp;<a href="#' + markerData.Id + '&cancel" id="' + markerData.Id + '&cancel">Cancel</button>').replaceWith('<a href="#' + markerData.Id + '" id="(' + markerData.Id + ')" >adjust</a>');
+                    });
+                });
+            });
+        </script>*@
+        }
+</body>
+</html>		
